@@ -2,6 +2,7 @@ import React from 'react';
 import { Router, Route, Switch, Link, NavLink } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory';
 import AddClientPage from '../components/AddClientPage';
+import AddSponsorshipPage from '../components/AddSponsorshipPage';
 import EditClientPage from '../components/EditClientPage';
 import ClientListPage from '../components/ClientListPage';
 import DashboardPage from '../components/DashboardPage';
@@ -21,6 +22,7 @@ const AppRouter = () => (
         <PrivateRoute path="/clients" component={ClientListPage} />
         <PrivateRoute path="/create/client" component={AddClientPage} />
         <PrivateRoute path="/edit/client/:id" component={EditClientPage} />
+        <PrivateRoute path="/create/sponsorship" component={AddSponsorshipPage} />
         <Route component={NotFoundPage} />
       </Switch>
     </div>
