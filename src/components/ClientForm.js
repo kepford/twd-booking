@@ -22,7 +22,7 @@ export default class ClientForm extends React.Component {
     else {
       this.setState(() => ({ error: '' }));
       this.props.onSubmit({
-        clientName: this.state.clientName,
+        clientName: this.state.clientName
       });
     }
   };

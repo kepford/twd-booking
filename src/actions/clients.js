@@ -45,7 +45,7 @@ export const editClient = (id, updates) => ({
 
 export const startEditClient = (id, updates) => {
   return (dispatch) => {
-    return database.ref(`clients/{id}`).update(updates).then(() => {
+    return database.ref(`clients/${id}`).update(updates).then(() => {
       dispatch(editClient(id, updates));
     });
   };
@@ -53,7 +53,7 @@ export const startEditClient = (id, updates) => {
 
 // SET_CLIENTS
 export const setClients = (clients) => ({
-  type: 'SET_CLIENT',
+  type: 'SET_CLIENTS',
   clients
 });
 
