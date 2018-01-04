@@ -16,7 +16,7 @@ exports[`should render Header correctly 1`] = `
         to="/dashboard"
       >
         <h1>
-          Boilerplate
+          TheWeeklyDrop
         </h1>
       </Link>
       <button
@@ -27,5 +27,17 @@ exports[`should render Header correctly 1`] = `
       </button>
     </div>
   </div>
+  <Link
+    replace={false}
+    to="/create/client"
+  >
+    Add Client
+  </Link>
+  <Link
+    replace={false}
+    to="/clients"
+  >
+    Clients
+  </Link>
 </header>
 `;

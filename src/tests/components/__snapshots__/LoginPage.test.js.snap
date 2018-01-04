@@ -10,10 +10,10 @@ exports[`should correctly render LoginPage 1`] = `
     <h1
       className="box-layout__title"
     >
-      Boilerplate
+      TheWeeklyDrop
     </h1>
     <p>
-      Tag line for app
+      For Sponsors of TheWeeklyDrop
     </p>
     <button
       className="button"
