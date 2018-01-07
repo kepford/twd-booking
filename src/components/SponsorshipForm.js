@@ -1,8 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import moment from 'moment';
 import { SingleDatePicker } from 'react-dates';
+import selectClients from '../selectors/clients';
 
-export default class SponsorshipForm extends React.Component {
+class SponsorshipForm extends React.Component {
   constructor(props) {
     super(props);
 
@@ -106,8 +108,15 @@ export default class SponsorshipForm extends React.Component {
           value={this.state.client}
           onChange={this.onClientChange}
         >
-          <option value="1">Dummy Client 1</option>
-          <option value="2">Dummy Client 2</option>
+          {
+            this.props.clients.map((client) => <option
+              value={client.id}
+              key={client.id}
+            >
+              {client.clientName}
+            </option>
+            )
+          }
         </select>
         <input
           type="text"
@@ -143,3 +152,11 @@ export default class SponsorshipForm extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    clients: selectClients(state.clients, state.filters)
+  };
+};
+
+export default connect(mapStateToProps)(SponsorshipForm);
