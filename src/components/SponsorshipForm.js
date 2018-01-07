@@ -1,4 +1,6 @@
 import React from 'react';
+import moment from 'moment';
+import { SingleDatePicker } from 'react-dates';
 
 export default class SponsorshipForm extends React.Component {
   constructor(props) {
@@ -9,6 +11,8 @@ export default class SponsorshipForm extends React.Component {
       type: props.sponsorship ? props.sponsorship.type : '',
       url: props.sponsorship ? props.sponsorship.url : '',
       body: props.sponsorship ? props.sponsorship.body : '',
+      date: props.sponsorship ? moment(props.sponsorship.date) : moment(),
+      calendarFocused: false,
       ready: props.sponsorship ? props.sponsorship.ready : '',
       error: ''
     };
@@ -29,6 +33,14 @@ export default class SponsorshipForm extends React.Component {
     const body = e.target.value;
     this.setState(() => ({ body }));
   };
+  onDateChange = (date) => {
+    if (date) {
+      this.setState(() => ({ date }));
+    }
+  };
+  onFocusChange = ({ focused }) => {
+    this.setState(() => ({ calendarFocused: focused }));
+  };
   onReadyChange = (e) => {
     const ready = e.target.value;
     this.setState(() => ({ ready }));
@@ -40,12 +52,14 @@ export default class SponsorshipForm extends React.Component {
       this.setState(() => ({ error: 'Please provide sponsorship title.' }));
     }
     else {
+      console.log(this);
       this.setState(() => ({ error: '' }));
       this.props.onSubmit({
         title: this.state.title,
         type: this.state.type,
         url: this.state.url,
         body: this.state.body,
+        date: this.state.date.valueOf(),
         ready: this.state.ready
       });
     }
@@ -89,6 +103,14 @@ export default class SponsorshipForm extends React.Component {
           onChange={this.onBodyChange}
         >
         </textarea>
+        <SingleDatePicker
+          date={this.state.date}
+          onDateChange={this.onDateChange}
+          focused={this.state.calendarFocused}
+          onFocusChange={this.onFocusChange}
+          numberOfMonths={1}
+          isOutsideRange={() => false}
+        />
         <div className="checkbox">
           <label>
             <input

@@ -13,11 +13,25 @@ export const Header = ({ startLogout }) => (
         <button className="button button--link" onClick={startLogout}>Logout</button>
       </div>
     </div>
+    <Link to="/dashboard" >
+      <button className="button button--link">
+      Dashboard
+      </button>
+    </Link>
+    <Link to="/create/sponsorship" >
+      <button className="button button--link">
+        Add Sponsorship
+      </button>
+    </Link>
     <Link to="/create/client" >
+      <button className="button button--link">
       Add Client
+      </button>
     </Link>
     <Link to="/clients" >
+      <button className="button button--link">
       Clients
+      </button>
     </Link>
   </header>
 );

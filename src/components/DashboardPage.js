@@ -1,8 +1,10 @@
 import React from 'react';
+import SponsorshipList from './SponsorshipList';
 
 const DashboardPage = () => (
   <div>
-    Dashboard page content.
+    <h1> Sponsorship Content</h1>
+    <SponsorshipList />
   </div>
 );
 

@@ -18,7 +18,8 @@ export default (state = clientsReducerDefaultState, action) => {
           ...client,
           ...action.updates
         };
-      } else {
+      }
+      else {
         return client;
       }
     });

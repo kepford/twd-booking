@@ -13,6 +13,7 @@ export const startAddSponsorship = (sponsorshipData = {}) => {
       type = '',
       url = '',
       body = '',
+      date = '',
       ready = ''
     } = sponsorshipData;
     const sponsorship = {
@@ -20,6 +21,7 @@ export const startAddSponsorship = (sponsorshipData = {}) => {
       type,
       url,
       body,
+      date,
       ready
     };
 
