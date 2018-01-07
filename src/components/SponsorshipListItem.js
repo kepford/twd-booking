@@ -1,10 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
 
-const SponsorshipListItem = ({ id, title }) => (
+const SponsorshipListItem = ({ id, issue, title, date, type }) => (
   <Link className="list-item" to={`/edit/sponsorship/${id}`}>
     <div>
-      <h3 className="list-item__title">{title}</h3>
+      <h3 className="list-item__title">{title} - Issue {issue}</h3>
+      <span className="list-item__sub-title">{moment(date).format('MMMM Do, YYYY')}</span>
+      <span className="list-item__sub-title">{type}</span>
     </div>
   </Link>
 );

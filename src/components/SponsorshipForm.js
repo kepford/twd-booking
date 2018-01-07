@@ -7,16 +7,26 @@ export default class SponsorshipForm extends React.Component {
     super(props);
 
     this.state = {
+      date: props.sponsorship ? moment(props.sponsorship.date) : moment(),
+      issue: props.sponsorship ? props.sponsorship.issue : '',
+      client: props.sponsorship ? props.sponsorship.client : '',
       title: props.sponsorship ? props.sponsorship.title : '',
       type: props.sponsorship ? props.sponsorship.type : '',
       url: props.sponsorship ? props.sponsorship.url : '',
       body: props.sponsorship ? props.sponsorship.body : '',
-      date: props.sponsorship ? moment(props.sponsorship.date) : moment(),
       calendarFocused: false,
-      ready: props.sponsorship ? props.sponsorship.ready : '',
+      status: props.sponsorship ? props.sponsorship.status : '',
       error: ''
     };
   }
+  onIssueChange = (e) => {
+    const issue = e.target.value;
+    this.setState(() => ({ issue }));
+  };
+  onClientChange = (e) => {
+    const client = e.target.value;
+    this.setState(() => ({ client }));
+  };
   onTitleChange = (e) => {
     const title = e.target.value;
     this.setState(() => ({ title }));
@@ -41,9 +51,9 @@ export default class SponsorshipForm extends React.Component {
   onFocusChange = ({ focused }) => {
     this.setState(() => ({ calendarFocused: focused }));
   };
-  onReadyChange = (e) => {
-    const ready = e.target.value;
-    this.setState(() => ({ ready }));
+  onStatusChange = (e) => {
+    const status = e.target.value;
+    this.setState(() => ({ status }));
   };
   onSubmit = (e) => {
     e.preventDefault();
@@ -52,37 +62,38 @@ export default class SponsorshipForm extends React.Component {
       this.setState(() => ({ error: 'Please provide sponsorship title.' }));
     }
     else {
-      console.log(this);
       this.setState(() => ({ error: '' }));
       this.props.onSubmit({
-        title: this.state.title,
+        date: this.state.date.valueOf(),
+        issue: this.state.issue,
         type: this.state.type,
+        client: this.state.client,
+        title: this.state.title,
         url: this.state.url,
         body: this.state.body,
-        date: this.state.date.valueOf(),
-        ready: this.state.ready
+        status: this.state.status
       });
     }
   };
-  // title
-  // type
-  // url
-  // body
-  // ready
-  // issue
-  // client
 
   render() {
     return (
       <form className="form" onSubmit={this.onSubmit}>
         {this.state.error && <p className="form__error">{this.state.error}</p>}
+        <SingleDatePicker
+          date={this.state.date}
+          onDateChange={this.onDateChange}
+          focused={this.state.calendarFocused}
+          onFocusChange={this.onFocusChange}
+          numberOfMonths={1}
+          isOutsideRange={() => false}
+        />
         <input
-          type="text"
-          placeholder="Title"
-          autoFocus
+          type="number"
           className="text-input"
-          value={this.state.title}
-          onChange={this.onTitleChange}
+          disabled
+          value={this.state.issue}
+          onChange={this.onIssueChange}
         />
         <select
           value={this.state.type}
@@ -91,6 +102,21 @@ export default class SponsorshipForm extends React.Component {
           <option value="sponsoredlink">Sponsored link</option>
           <option value="primarysponsorship">Primary Sponsorship</option>
         </select>
+        <select
+          value={this.state.client}
+          onChange={this.onClientChange}
+        >
+          <option value="1">Dummy Client 1</option>
+          <option value="2">Dummy Client 2</option>
+        </select>
+        <input
+          type="text"
+          placeholder="Title"
+          autoFocus
+          className="text-input"
+          value={this.state.title}
+          onChange={this.onTitleChange}
+        />
         <input
           type="url"
           placeholder="http://theweeklydrop.com"
@@ -103,25 +129,13 @@ export default class SponsorshipForm extends React.Component {
           onChange={this.onBodyChange}
         >
         </textarea>
-        <SingleDatePicker
-          date={this.state.date}
-          onDateChange={this.onDateChange}
-          focused={this.state.calendarFocused}
-          onFocusChange={this.onFocusChange}
-          numberOfMonths={1}
-          isOutsideRange={() => false}
-        />
-        <div className="checkbox">
-          <label>
-            <input
-              type="checkbox"
-              className="form-control"
-              value={this.state.ready}
-              onChange={this.onReadyChange}
-            />
-            Ready for publication
-          </label>
-        </div>
+        <select
+          value={this.state.status}
+          onChange={this.onStatusChange}
+        >
+          <option value="draft">Draft</option>
+          <option value="Ready to publish">Ready to publish</option>
+        </select>
         <div>
           <button className="button">Save Sponsorship</button>
         </div>

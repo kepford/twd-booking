@@ -9,20 +9,24 @@ export const addSponsorship = (sponsorship) => ({
 export const startAddSponsorship = (sponsorshipData = {}) => {
   return (dispatch) => {
     const {
+      date = '',
+      issue = '',
+      client = '',
       title = '',
       type = '',
       url = '',
       body = '',
-      date = '',
-      ready = ''
+      status = ''
     } = sponsorshipData;
     const sponsorship = {
+      date,
+      issue,
+      client,
       title,
       type,
       url,
       body,
-      date,
-      ready
+      status
     };
 
     return database.ref(`sponsorships`).push(sponsorship).then((ref) => {

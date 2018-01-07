@@ -1,9 +1,10 @@
 import React from 'react';
-import { Router, Route, Switch, Link, NavLink } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory';
 import AddClientPage from '../components/AddClientPage';
 import AddSponsorshipPage from '../components/AddSponsorshipPage';
 import EditClientPage from '../components/EditClientPage';
+import EditSponsorshipPage from '../components/EditSponsorshipPage';
 import ClientListPage from '../components/ClientListPage';
 import DashboardPage from '../components/DashboardPage';
 import NotFoundPage from '../components/NotFoundPage';
@@ -23,6 +24,7 @@ const AppRouter = () => (
         <PrivateRoute path="/create/client" component={AddClientPage} />
         <PrivateRoute path="/edit/client/:id" component={EditClientPage} />
         <PrivateRoute path="/create/sponsorship" component={AddSponsorshipPage} />
+        <PrivateRoute path="/edit/Sponsorship/:id" component={EditSponsorshipPage} />
         <Route component={NotFoundPage} />
       </Switch>
     </div>
