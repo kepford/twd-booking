@@ -82,62 +82,92 @@ class SponsorshipForm extends React.Component {
     return (
       <form className="form" onSubmit={this.onSubmit}>
         {this.state.error && <p className="form__error">{this.state.error}</p>}
-        <SingleDatePicker
-          date={this.state.date}
-          onDateChange={this.onDateChange}
-          focused={this.state.calendarFocused}
-          onFocusChange={this.onFocusChange}
-          numberOfMonths={1}
-          isOutsideRange={() => false}
-        />
-        <input
-          type="number"
-          className="text-input"
-          disabled
-          value={this.state.issue}
-          onChange={this.onIssueChange}
-        />
-        <select
-          value={this.state.type}
-          onChange={this.onTypeChange}
-        >
-          <option value="sponsoredlink">Sponsored link</option>
-          <option value="primarysponsorship">Primary Sponsorship</option>
-        </select>
-        <select
-          value={this.state.client}
-          onChange={this.onClientChange}
-        >
-          {
-            this.props.clients.map((client) => <option
-              value={client.id}
-              key={client.id}
-            >
-              {client.clientName}
-            </option>
-            )
-          }
-        </select>
+        <div className="admin">
+          <label>
+            Date
+          </label>
+          <SingleDatePicker
+            date={this.state.date}
+            onDateChange={this.onDateChange}
+            focused={this.state.calendarFocused}
+            onFocusChange={this.onFocusChange}
+            numberOfMonths={1}
+            isOutsideRange={() => false}
+          />
+          <label>
+            Issue
+          </label>
+          <input
+            type="number"
+            className="text-input"
+            disabled
+            value={this.state.issue}
+            onChange={this.onIssueChange}
+          />
+          <label>
+            Sponsorship Type
+          </label>
+          <select
+            value={this.state.type}
+            onChange={this.onTypeChange}
+          >
+            <option value="sponsoredlink">Sponsored link</option>
+            <option value="primarysponsorship">Primary Sponsorship</option>
+          </select>
+          <label>
+            Client
+          </label>
+          <select
+            value={this.state.client}
+            onChange={this.onClientChange}
+          >
+            {
+              this.props.clients.map((client) => <option
+                value={client.id}
+                key={client.id}
+              >
+                {client.clientName}
+              </option>
+              )
+            }
+          </select>
+        </div>
+        <label>
+          Title
+        </label>
         <input
           type="text"
           placeholder="Title"
+          maxlength="80"
           autoFocus
           className="text-input"
           value={this.state.title}
           onChange={this.onTitleChange}
         />
+        <label>
+          Title URL
+        </label>
         <input
           type="url"
           placeholder="http://theweeklydrop.com"
           value={this.state.url}
           onChange={this.onUrlChange}
         />
+        <label>
+          Body Copy
+        </label>
         <textarea
           placeholder="Body copy"
+          maxlength="500"
+          rows="5"
           value={this.state.body}
           onChange={this.onBodyChange}
         >
         </textarea>
+        <label>
+          Status
+        </label>
+
         <select
           value={this.state.status}
           onChange={this.onStatusChange}
