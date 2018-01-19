@@ -1,13 +1,19 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { EditorState, ContentState, convertToRaw } from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
+import draftToHtml from 'draftjs-to-html';
+import htmlToDraft from 'html-to-draftjs';
 import moment from 'moment';
 import { SingleDatePicker } from 'react-dates';
 import selectClients from '../selectors/clients';
+import '../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 class SponsorshipForm extends React.Component {
   constructor(props) {
     super(props);
-
+    const content = props.sponsorship.bodyTwo ? htmlToDraft(props.sponsorship.bodyTwo) : '';
+    const contentState = content ? ContentState.createFromBlockArray(content.contentBlocks) : '';
     this.state = {
       date: props.sponsorship ? moment(props.sponsorship.date) : moment(),
       issue: props.sponsorship ? props.sponsorship.issue : '',
@@ -16,11 +22,21 @@ class SponsorshipForm extends React.Component {
       type: props.sponsorship ? props.sponsorship.type : '',
       url: props.sponsorship ? props.sponsorship.url : '',
       body: props.sponsorship ? props.sponsorship.body : '',
+      bodyTwo: props.sponsorship ? props.sponsorship.bodyTwo : '',
+      editorState: content ? EditorState.createWithContent(contentState) : EditorState.createEmpty(),
       calendarFocused: false,
       status: props.sponsorship ? props.sponsorship.status : '',
       error: ''
     };
   }
+
+  onEditorStateChange: Function = (editorState) => {
+    const bodyTwo = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+    this.setState({
+      editorState,
+      bodyTwo
+    });
+  };
   onIssueChange = (e) => {
     const issue = e.target.value;
     this.setState(() => ({ issue }));
@@ -57,9 +73,9 @@ class SponsorshipForm extends React.Component {
     const status = e.target.value;
     this.setState(() => ({ status }));
   };
+
   onSubmit = (e) => {
     e.preventDefault();
-
     if (!this.state.title) {
       this.setState(() => ({ error: 'Please provide sponsorship title.' }));
     }
@@ -73,12 +89,14 @@ class SponsorshipForm extends React.Component {
         title: this.state.title,
         url: this.state.url,
         body: this.state.body,
-        status: this.state.status
+        bodyTwo: this.state.bodyTwo,
+        status: this.state.status,
       });
     }
   };
 
   render() {
+
     return (
       <form className="form" onSubmit={this.onSubmit}>
         {this.state.error && <p className="form__error">{this.state.error}</p>}
@@ -138,7 +156,7 @@ class SponsorshipForm extends React.Component {
         <input
           type="text"
           placeholder="Title"
-          maxlength="80"
+          maxLength="80"
           autoFocus
           className="text-input"
           value={this.state.title}
@@ -153,12 +171,22 @@ class SponsorshipForm extends React.Component {
           value={this.state.url}
           onChange={this.onUrlChange}
         />
+        <Editor
+          editorState={this.state.editorState}
+          wrapperClassName="wrapper-class"
+          editorClassName="editor-class"
+          toolbarClassName="toolbar-class"
+          toolbar={{
+            options: ['link']
+          }}
+          onEditorStateChange={this.onEditorStateChange}
+        />
         <label>
           Body Copy
         </label>
         <textarea
           placeholder="Body copy"
-          maxlength="500"
+          maxLength="500"
           rows="5"
           value={this.state.body}
           onChange={this.onBodyChange}
