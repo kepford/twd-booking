@@ -28,3 +28,4 @@ _This command will look at your `.nvmrc` file and use the version node.js specif
 - [The Complete React Web Developer Course (with Redux)](https://www.udemy.com/react-2nd-edition/learn/v4/) - A good and complete course introducing viewers to React, Redux, Firebase, and more.
 - [React for Beginners](https://reactforbeginners.com/) - Another good introduction to React.
 - [Draft-js - Saving data to the server](https://reactrocket.com/post/draft-js-persisting-content/)
+- [Firebase file upload using ReactJS](https://medium.com/@aio.phnompenh/firebase-file-upload-using-reactjs-8e1068a087e4)
