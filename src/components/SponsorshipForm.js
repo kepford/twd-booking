@@ -12,7 +12,7 @@ import '../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 class SponsorshipForm extends React.Component {
   constructor(props) {
     super(props);
-    const content = props.sponsorship.bodyTwo ? htmlToDraft(props.sponsorship.bodyTwo) : '';
+    const content = props.sponsorship ? htmlToDraft(props.sponsorship.primaryBody) : '';
     const contentState = content ? ContentState.createFromBlockArray(content.contentBlocks) : '';
     this.state = {
       date: props.sponsorship ? moment(props.sponsorship.date) : moment(),
@@ -21,8 +21,8 @@ class SponsorshipForm extends React.Component {
       title: props.sponsorship ? props.sponsorship.title : '',
       type: props.sponsorship ? props.sponsorship.type : '',
       url: props.sponsorship ? props.sponsorship.url : '',
-      body: props.sponsorship ? props.sponsorship.body : '',
-      bodyTwo: props.sponsorship ? props.sponsorship.bodyTwo : '',
+      sponsoredLinkBody: props.sponsorship ? props.sponsorship.sponsoredLinkBody : '',
+      primaryBody: props.sponsorship ? props.sponsorship.primaryBody : '',
       editorState: content ? EditorState.createWithContent(contentState) : EditorState.createEmpty(),
       calendarFocused: false,
       status: props.sponsorship ? props.sponsorship.status : '',
@@ -31,10 +31,10 @@ class SponsorshipForm extends React.Component {
   }
 
   onEditorStateChange: Function = (editorState) => {
-    const bodyTwo = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+    const primaryBody = draftToHtml(convertToRaw(editorState.getCurrentContent()));
     this.setState({
       editorState,
-      bodyTwo
+      primaryBody
     });
   };
   onIssueChange = (e) => {
@@ -58,8 +58,8 @@ class SponsorshipForm extends React.Component {
     this.setState(() => ({ url }));
   };
   onBodyChange = (e) => {
-    const body = e.target.value;
-    this.setState(() => ({ body }));
+    const sponsoredLinkBody = e.target.value;
+    this.setState(() => ({ sponsoredLinkBody }));
   };
   onDateChange = (date) => {
     if (date) {
@@ -84,13 +84,13 @@ class SponsorshipForm extends React.Component {
       this.props.onSubmit({
         date: this.state.date.valueOf(),
         issue: this.state.issue,
-        type: this.state.type,
+        type: this.state.type ? this.state.type : 'sponsored link',
         client: this.state.client,
         title: this.state.title,
         url: this.state.url,
-        body: this.state.body,
-        bodyTwo: this.state.bodyTwo,
-        status: this.state.status,
+        sponsoredLinkBody: this.state.sponsoredLinkBody,
+        primaryBody: this.state.primaryBody,
+        status: this.state.status ? this.state.status : 'draft',
       });
     }
   };
@@ -118,7 +118,6 @@ class SponsorshipForm extends React.Component {
           <input
             type="number"
             className="text-input"
-            disabled
             value={this.state.issue}
             onChange={this.onIssueChange}
           />
@@ -129,8 +128,8 @@ class SponsorshipForm extends React.Component {
             value={this.state.type}
             onChange={this.onTypeChange}
           >
-            <option value="sponsoredlink">Sponsored link</option>
-            <option value="primarysponsorship">Primary Sponsorship</option>
+            <option value="sponsored link">Sponsored link</option>
+            <option value="primary sponsorship">Primary Sponsorship</option>
           </select>
           <label>
             Client
@@ -188,7 +187,7 @@ class SponsorshipForm extends React.Component {
           placeholder="Body copy"
           maxLength="500"
           rows="5"
-          value={this.state.body}
+          value={this.state.sponsoredLinkBody}
           onChange={this.onBodyChange}
         >
         </textarea>
