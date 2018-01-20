@@ -96,6 +96,30 @@ class SponsorshipForm extends React.Component {
   };
 
   render() {
+    // Swap body depending on sponsorship type.
+    let body = null;
+    if (this.state.type === 'primary sponsorship') {
+      body = <Editor
+        editorState={this.state.editorState}
+        wrapperClassName="wrapper-class"
+        editorClassName="editor-class"
+        toolbarClassName="toolbar-class"
+        toolbar={{
+          options: ['link']
+        }}
+        onEditorStateChange={this.onEditorStateChange}
+      />;
+    }
+    else {
+      body = <textarea
+        placeholder="Body copy"
+        maxLength="500"
+        rows="5"
+        value={this.state.sponsoredLinkBody}
+        onChange={this.onBodyChange}
+      >
+      </textarea>;
+    }
 
     return (
       <form className="form" onSubmit={this.onSubmit}>
@@ -170,31 +194,13 @@ class SponsorshipForm extends React.Component {
           value={this.state.url}
           onChange={this.onUrlChange}
         />
-        <Editor
-          editorState={this.state.editorState}
-          wrapperClassName="wrapper-class"
-          editorClassName="editor-class"
-          toolbarClassName="toolbar-class"
-          toolbar={{
-            options: ['link']
-          }}
-          onEditorStateChange={this.onEditorStateChange}
-        />
         <label>
           Body Copy
         </label>
-        <textarea
-          placeholder="Body copy"
-          maxLength="500"
-          rows="5"
-          value={this.state.sponsoredLinkBody}
-          onChange={this.onBodyChange}
-        >
-        </textarea>
+        { body }
         <label>
           Status
         </label>
-
         <select
           value={this.state.status}
           onChange={this.onStatusChange}
