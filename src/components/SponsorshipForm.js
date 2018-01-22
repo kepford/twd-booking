@@ -28,10 +28,10 @@ class SponsorshipForm extends React.Component {
       editorState: content ? EditorState.createWithContent(contentState) : EditorState.createEmpty(),
       calendarFocused: false,
       status: props.sponsorship ? props.sponsorship.status : '',
-      image: '',
+      image: props.sponsorship ? props.sponsorship.image : '',
       isUploading: false,
       progress: 0,
-      imageURL: '',
+      imageURL: props.sponsorship ? props.sponsorship.imageURL : '',
       error: ''
     };
   }
@@ -44,8 +44,13 @@ class SponsorshipForm extends React.Component {
   }
 
   handleUploadSuccess = (filename) => {
-    this.setState({image: filename, progress: 100, isUploading: false});
-    firebase.storage().ref('images').child(filename).getDownloadURL().then(url => this.setState({imageURL: url}));
+    this.setState({
+      image: filename,
+      progress: 100,
+      isUploading: false
+    });
+    firebase.storage().ref('images').child(filename)
+      .getDownloadURL().then(url => this.setState({imageURL: url}));
   };
 
   onEditorStateChange: Function = (editorState) => {
@@ -108,6 +113,8 @@ class SponsorshipForm extends React.Component {
         url: this.state.url,
         sponsoredLinkBody: this.state.sponsoredLinkBody,
         primaryBody: this.state.primaryBody,
+        imageURL: this.state.imageURL,
+        image: this.state.image,
         status: this.state.status ? this.state.status : 'draft',
       });
     }
@@ -145,7 +152,9 @@ class SponsorshipForm extends React.Component {
           onUploadError={this.handleUploadError}
           onUploadSuccess={this.handleUploadSuccess}
           onProgress={this.handleProgress}
-        /></div> ;
+          maxHeight="125"
+          maxWidth="125"
+        /></div>;
     }
     else {
       body = <textarea

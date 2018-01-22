@@ -17,6 +17,8 @@ export const startAddSponsorship = (sponsorshipData = {}) => {
       url = '',
       sponsoredLinkBody = '',
       primaryBody = '',
+      imageURL = '',
+      image = '',
       status = ''
     } = sponsorshipData;
     const sponsorship = {
@@ -28,6 +30,8 @@ export const startAddSponsorship = (sponsorshipData = {}) => {
       url,
       sponsoredLinkBody,
       primaryBody,
+      imageURL,
+      image,
       status
     };
 
