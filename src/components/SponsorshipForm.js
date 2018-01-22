@@ -6,6 +6,8 @@ import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 import moment from 'moment';
 import { SingleDatePicker } from 'react-dates';
+import firebase from 'firebase';
+import FileUploader from 'react-firebase-file-uploader';
 import selectClients from '../selectors/clients';
 import '../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
@@ -26,9 +28,25 @@ class SponsorshipForm extends React.Component {
       editorState: content ? EditorState.createWithContent(contentState) : EditorState.createEmpty(),
       calendarFocused: false,
       status: props.sponsorship ? props.sponsorship.status : '',
+      image: '',
+      isUploading: false,
+      progress: 0,
+      imageURL: '',
       error: ''
     };
   }
+
+  handleUploadStart = () => this.setState({isUploading: true, progress: 0});
+  handleProgress = (progress) => this.setState({progress});
+  handleUploadError = (error) => {
+    this.setState({isUploading: false});
+    console.error(error);
+  }
+
+  handleUploadSuccess = (filename) => {
+    this.setState({image: filename, progress: 100, isUploading: false});
+    firebase.storage().ref('images').child(filename).getDownloadURL().then(url => this.setState({imageURL: url}));
+  };
 
   onEditorStateChange: Function = (editorState) => {
     const primaryBody = draftToHtml(convertToRaw(editorState.getCurrentContent()));
@@ -98,6 +116,7 @@ class SponsorshipForm extends React.Component {
   render() {
     // Swap body depending on sponsorship type.
     let body = null;
+    let image = null;
     if (this.state.type === 'primary sponsorship') {
       body = <Editor
         editorState={this.state.editorState}
@@ -109,6 +128,24 @@ class SponsorshipForm extends React.Component {
         }}
         onEditorStateChange={this.onEditorStateChange}
       />;
+      image = <div>
+        <label>Image:</label>
+        { this.state.isUploading &&
+          <p>Progress: {this.state.progress}</p>
+        }
+        { this.state.imageURL &&
+          <img src={this.state.imageURL} />
+        }
+        <FileUploader
+          accept="image/*"
+          name="image"
+          randomizeFilename
+          storageRef={firebase.storage().ref('images')}
+          onUploadStart={this.handleUploadStart}
+          onUploadError={this.handleUploadError}
+          onUploadSuccess={this.handleUploadSuccess}
+          onProgress={this.handleProgress}
+        /></div> ;
     }
     else {
       body = <textarea
@@ -198,6 +235,7 @@ class SponsorshipForm extends React.Component {
           Body Copy
         </label>
         { body }
+        { image }
         <label>
           Status
         </label>
