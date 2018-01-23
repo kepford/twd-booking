@@ -6,6 +6,7 @@ import selectSponsorships from '../selectors/sponsorships';
 export const SponsorshipList = (props) => (
   <div className="content-container">
     <div className="list-header">
+      <h1 className="page-header__title"> Sponsorship Content</h1>
       <div className="show-for-mobile">Sponsorships</div>
       <div className="show-for-desktop">Sponsorship</div>
     </div>

@@ -52,6 +52,22 @@ class SponsorshipForm extends React.Component {
     firebase.storage().ref('images').child(filename)
       .getDownloadURL().then(url => this.setState({imageURL: url}));
   };
+  handleDeleteImage = (e) => {
+    e.preventDefault();
+    this.setState({
+      image: null,
+      imageURL: null
+    });
+    const storage = firebase.storage();
+    const storageRef = storage.ref();
+    const image = storageRef.child('images/' + this.state.image);
+    // Delete the file
+    image.delete().then(function() {
+      console.log('file was deleted');
+    }).catch(function(error) {
+      console.log(error);
+    });
+  };
 
   onEditorStateChange: Function = (editorState) => {
     const primaryBody = draftToHtml(convertToRaw(editorState.getCurrentContent()));
@@ -141,7 +157,10 @@ class SponsorshipForm extends React.Component {
           <p>Progress: {this.state.progress}</p>
         }
         { this.state.imageURL &&
-          <img src={this.state.imageURL} />
+          <div>
+            <img src={this.state.imageURL} />
+            <button className="button button--secondary" onClick={this.handleDeleteImage}>Remove Image</button>
+          </div>
         }
         <FileUploader
           accept="image/*"
@@ -154,7 +173,10 @@ class SponsorshipForm extends React.Component {
           onProgress={this.handleProgress}
           maxHeight="125"
           maxWidth="125"
-        /></div>;
+        />
+        <span className="field-instructions">Images must be 125px by 125px. Images are automatically resized
+          to these dimensions.</span>
+      </div>;
     }
     else {
       body = <textarea
