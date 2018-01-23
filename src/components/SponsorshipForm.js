@@ -61,14 +61,12 @@ class SponsorshipForm extends React.Component {
     const storage = firebase.storage();
     const storageRef = storage.ref();
     const image = storageRef.child('images/' + this.state.image);
-    // Delete the file
     image.delete().then(function() {
       console.log('file was deleted');
     }).catch(function(error) {
       console.log(error);
     });
   };
-
   onEditorStateChange: Function = (editorState) => {
     const primaryBody = draftToHtml(convertToRaw(editorState.getCurrentContent()));
     this.setState({
@@ -174,8 +172,8 @@ class SponsorshipForm extends React.Component {
           maxHeight="125"
           maxWidth="125"
         />
-        <span className="field-instructions">Images must be 125px by 125px. Images are automatically resized
-          to these dimensions.</span>
+        <div className="field-instructions">Images must be 125px by 125px. Images are automatically resized
+          to these dimensions.</div>
       </div>;
     }
     else {
