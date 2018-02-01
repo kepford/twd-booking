@@ -123,15 +123,15 @@ class SponsorshipForm extends React.Component {
       this.props.onSubmit({
         date: this.state.date.valueOf(),
         issue: this.state.issue,
-        type: this.state.type ? this.state.type : 'sponsored link',
+        type: this.state.type || 'sponsored link',
         client: this.state.client,
         title: this.state.title,
         url: this.state.url,
         sponsoredLinkBody: this.state.sponsoredLinkBody,
         primaryBody: this.state.primaryBody,
-        imageURL: this.state.imageURL,
-        image: this.state.image,
-        status: this.state.status ? this.state.status : 'draft',
+        imageURL: this.state.imageURL || '',
+        image: this.state.image || '',
+        status: this.state.status || 'draft',
       });
     }
   };
