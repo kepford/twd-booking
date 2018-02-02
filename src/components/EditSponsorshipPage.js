@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import SponsorshipForm from './SponsorshipForm';
+import isAdmin from '../utilities/isAdmin';
 import { startEditSponsorship, startRemoveSponsorship } from '../actions/sponsorships';
 
 export class EditSponsorshipPage extends React.Component {
@@ -25,7 +26,9 @@ export class EditSponsorshipPage extends React.Component {
             sponsorship={this.props.sponsorship}
             onSubmit={this.onSubmit}
           />
-          <button className="button button--secondary" onClick={this.onRemove}>Remove sponsorship</button>
+          {
+            isAdmin() && <button className="button button--secondary" onClick={this.onRemove}>Remove sponsorship</button>
+          }
         </div>
       </div>
     );

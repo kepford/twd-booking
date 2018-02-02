@@ -10,6 +10,7 @@ import DashboardPage from '../components/DashboardPage';
 import NotFoundPage from '../components/NotFoundPage';
 import LoginPage from '../components/LoginPage';
 import PrivateRoute from './PrivateRoute';
+import AdminRoute from './AdminRoute';
 import PublicRoute from './PublicRoute';
 
 export const history = createHistory();
@@ -20,10 +21,10 @@ const AppRouter = () => (
       <Switch>
         <PublicRoute path="/" component={LoginPage} exact={true} />
         <PrivateRoute path="/dashboard" component={DashboardPage} />
-        <PrivateRoute path="/clients" component={ClientListPage} />
-        <PrivateRoute path="/create/client" component={AddClientPage} />
-        <PrivateRoute path="/edit/client/:id" component={EditClientPage} />
-        <PrivateRoute path="/create/sponsorship" component={AddSponsorshipPage} />
+        <AdminRoute path="/clients" component={ClientListPage} />
+        <AdminRoute path="/create/client" component={AddClientPage} />
+        <AdminRoute path="/edit/client/:id" component={EditClientPage} />
+        <AdminRoute path="/create/sponsorship" component={AddSponsorshipPage} />
         <PrivateRoute path="/edit/Sponsorship/:id" component={EditSponsorshipPage} />
         <Route component={NotFoundPage} />
       </Switch>

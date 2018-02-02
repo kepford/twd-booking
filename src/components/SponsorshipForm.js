@@ -9,6 +9,7 @@ import { SingleDatePicker } from 'react-dates';
 import firebase from 'firebase';
 import FileUploader from 'react-firebase-file-uploader';
 import selectClients from '../selectors/clients';
+import isAdmin from '../utilities/isAdmin';
 import '../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 class SponsorshipForm extends React.Component {
@@ -17,6 +18,7 @@ class SponsorshipForm extends React.Component {
     const content = props.sponsorship ? htmlToDraft(props.sponsorship.primaryBody) : '';
     const contentState = content ? ContentState.createFromBlockArray(content.contentBlocks) : '';
     this.state = {
+      isAdmin: isAdmin(),
       date: props.sponsorship ? moment(props.sponsorship.date) : moment(),
       issue: props.sponsorship ? props.sponsorship.issue : '',
       client: props.sponsorship ? props.sponsorship.client : '',
@@ -136,8 +138,67 @@ class SponsorshipForm extends React.Component {
 
   render() {
     // Swap body depending on sponsorship type.
+    let admin = null;
     let body = null;
     let image = null;
+    if (this.state.isAdmin) {
+      admin = <div className="admin">
+        <label>
+          Date
+        </label>
+        <SingleDatePicker
+          date={this.state.date}
+          onDateChange={this.onDateChange}
+          focused={this.state.calendarFocused}
+          onFocusChange={this.onFocusChange}
+          numberOfMonths={1}
+          isOutsideRange={() => false}
+        />
+        <label>
+          Issue
+        </label>
+        <input
+          type="number"
+          className="text-input"
+          value={this.state.issue}
+          onChange={this.onIssueChange}
+        />
+        <label>
+          Sponsorship Type
+        </label>
+        <select
+          value={this.state.type}
+          onChange={this.onTypeChange}
+        >
+          <option value="sponsored link">Sponsored link</option>
+          <option value="primary sponsorship">Primary Sponsorship</option>
+        </select>
+        <label>
+          Client
+        </label>
+        <select
+          value={this.state.client}
+          onChange={this.onClientChange}
+        >
+          {
+            this.props.clients.map((client) => <option
+              value={client.id}
+              key={client.id}
+            >
+              {client.clientName}
+            </option>
+            )
+          }
+        </select>
+      </div>;
+    }
+    else {
+      admin = <div className="admin">
+        <div>Date:   { moment(this.state.date).format('MMMM Do, YYYY') } </div>
+        <div>Type:   { this.state.type } </div>
+        <div>Issue:  { this.state.issue } </div>
+      </div>;
+    }
     if (this.state.type === 'primary sponsorship') {
       body = <Editor
         editorState={this.state.editorState}
@@ -190,55 +251,7 @@ class SponsorshipForm extends React.Component {
     return (
       <form className="form" onSubmit={this.onSubmit}>
         {this.state.error && <p className="form__error">{this.state.error}</p>}
-        <div className="admin">
-          <label>
-            Date
-          </label>
-          <SingleDatePicker
-            date={this.state.date}
-            onDateChange={this.onDateChange}
-            focused={this.state.calendarFocused}
-            onFocusChange={this.onFocusChange}
-            numberOfMonths={1}
-            isOutsideRange={() => false}
-          />
-          <label>
-            Issue
-          </label>
-          <input
-            type="number"
-            className="text-input"
-            value={this.state.issue}
-            onChange={this.onIssueChange}
-          />
-          <label>
-            Sponsorship Type
-          </label>
-          <select
-            value={this.state.type}
-            onChange={this.onTypeChange}
-          >
-            <option value="sponsored link">Sponsored link</option>
-            <option value="primary sponsorship">Primary Sponsorship</option>
-          </select>
-          <label>
-            Client
-          </label>
-          <select
-            value={this.state.client}
-            onChange={this.onClientChange}
-          >
-            {
-              this.props.clients.map((client) => <option
-                value={client.id}
-                key={client.id}
-              >
-                {client.clientName}
-              </option>
-              )
-            }
-          </select>
-        </div>
+        { admin }
         <label>
           Title
         </label>
