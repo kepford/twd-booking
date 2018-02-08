@@ -32,6 +32,16 @@ export const Header = ({ startLogout }) => (
               Clients
             </button>
           </Link>
+          <Link to="/users" >
+            <button className="button button--link">
+              Users
+            </button>
+          </Link>
+          <Link to="/create/user" >
+            <button className="button button--link">
+              Add User
+            </button>
+          </Link>
         </div>
         :
         <Link to="/dashboard" >

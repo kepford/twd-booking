@@ -66,7 +66,7 @@ class SponsorshipForm extends React.Component {
     image.delete().then(function() {
       console.log('file was deleted');
     }).catch(function(error) {
-      console.log(error);
+      console.error(error);
     });
   };
   onEditorStateChange: Function = (editorState) => {
