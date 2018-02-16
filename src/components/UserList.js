@@ -17,11 +17,10 @@ export const UserList = (props) => (
             <span>No users</span>
           </div>
         ) : (
-          props.users.map((user) => {
-
-            console.log(user.clientId);
-            // TODO get client Name
-            return <UserListItem key={user.id} {...user} />;
+          props.users.map((user, i) => {
+            let client= props.clients.filter((client) => client.id === user.clientId ? client.clientName : false);
+            user.clientName = client[0].clientName;
+            return <UserListItem key={i} {...user} />;
           })
         )
       }

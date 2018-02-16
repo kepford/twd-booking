@@ -2,8 +2,7 @@
 
 export default (users, { text }) => {
   return users.filter((user) => {
-    const textMatch = user.id.includes(text);
-
+    const textMatch = user.userDisplayName.toLowerCase().includes(text.toLowerCase());
 
     return textMatch;
   });
