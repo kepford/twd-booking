@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import SponsorshipForm from './SponsorshipForm';
-import isAdmin from '../utilities/isAdmin';
 import { startEditSponsorship, startRemoveSponsorship } from '../actions/sponsorships';
 
 export class EditSponsorshipPage extends React.Component {
@@ -27,7 +26,7 @@ export class EditSponsorshipPage extends React.Component {
             onSubmit={this.onSubmit}
           />
           {
-            isAdmin() && <button className="button button--secondary" onClick={this.onRemove}>Remove sponsorship</button>
+            this.props.isAdmin && <button className="button button--secondary" onClick={this.onRemove}>Remove sponsorship</button>
           }
         </div>
       </div>
@@ -36,6 +35,7 @@ export class EditSponsorshipPage extends React.Component {
 }
 
 const mapStateToProps = (state, props) => ({
+  isAdmin: state.user.isAdmin,
   sponsorship: state.sponsorships.find((sponsorship) => sponsorship.id === props.match.params.id)
 });
 

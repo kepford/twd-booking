@@ -32,7 +32,7 @@ class UserForm extends React.Component {
   onSubmit = (e) => {
     e.preventDefault();
 
-    if (!this.state.userUid || this.state.userDisplayName || !this.state.clientId) {
+    if (!this.state.userUid || !this.state.userDisplayName || !this.state.clientId) {
       this.setState(() => ({ error: 'Please provide user UID, Display Name, and client' }));
     }
     else {
