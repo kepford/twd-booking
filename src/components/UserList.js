@@ -17,8 +17,8 @@ export const UserList = (props) => (
           </div>
         ) : (
           props.users.map((user, i) => {
-            let client= props.clients.filter((client) => client.id === user.clientId ? client.clientName : false);
-            user.clientName = client[0].clientName;
+            let client= props.clients.find((client) => client.id === user.clientId);
+            user.clientName = client.clientName;
             return <UserListItem key={i} {...user} />;
           })
         )

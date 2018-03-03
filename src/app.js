@@ -44,8 +44,10 @@ firebase.auth().onAuthStateChanged((user) => {
         client: userClient(user.uid, state.users)
       };
       store.dispatch(startSetUser(userData));
+    }).then(() => {
+      const state = store.getState();
+      store.dispatch(startSetSponsorships(state.user));
     });
-    store.dispatch(startSetSponsorships());
     store.dispatch(startSetClients()).then(() => {
       renderApp();
       if (history.location.pathname === '/') {

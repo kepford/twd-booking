@@ -3,18 +3,19 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { startLogout } from '../actions/auth';
 
-export const Header = ({ startLogout, isAdmin }) => (
+export const Header = ({ startLogout, user, client }) => (
   <header className="header">
     <div className="content-container">
       <div className="header__content">
         <Link className="header__title" to="/dashboard">
           <h1>TheWeeklyDrop</h1>
         </Link>
+        <div> {user.isAdmin ? 'Admin' : client.clientName}</div>
         <button className="button button--link" onClick={startLogout}>Logout</button>
       </div>
     </div>
     {
-      isAdmin ?
+      user.isAdmin ?
         <div>
           <Link to="/create/sponsorship" >
             <button className="button button--link">
@@ -53,7 +54,8 @@ export const Header = ({ startLogout, isAdmin }) => (
 );
 
 const mapStateToProps = (state) => ({
-  isAdmin: state.user.isAdmin
+  user: state.user,
+  client: state.clients.find(client => client.id === state.user.client)
 });
 
 const mapDispatchToProps = (dispatch) => ({
