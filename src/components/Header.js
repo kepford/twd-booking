@@ -2,20 +2,20 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { startLogout } from '../actions/auth';
-import isAdmin from '../utilities/isAdmin';
 
-export const Header = ({ startLogout }) => (
+export const Header = ({ startLogout, user, client }) => (
   <header className="header">
     <div className="content-container">
       <div className="header__content">
         <Link className="header__title" to="/dashboard">
           <h1>TheWeeklyDrop</h1>
         </Link>
+        <div> {user.isAdmin ? 'Admin' : client.clientName}</div>
         <button className="button button--link" onClick={startLogout}>Logout</button>
       </div>
     </div>
     {
-      isAdmin() ?
+      user.isAdmin ?
         <div>
           <Link to="/create/sponsorship" >
             <button className="button button--link">
@@ -32,6 +32,16 @@ export const Header = ({ startLogout }) => (
               Clients
             </button>
           </Link>
+          <Link to="/users" >
+            <button className="button button--link">
+              Users
+            </button>
+          </Link>
+          <Link to="/create/user" >
+            <button className="button button--link">
+              Add User
+            </button>
+          </Link>
         </div>
         :
         <Link to="/dashboard" >
@@ -43,8 +53,13 @@ export const Header = ({ startLogout }) => (
   </header>
 );
 
+const mapStateToProps = (state) => ({
+  user: state.user,
+  client: state.clients.find(client => client.id === state.user.client)
+});
+
 const mapDispatchToProps = (dispatch) => ({
   startLogout: () => dispatch(startLogout())
 });
 
-export default connect(undefined, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

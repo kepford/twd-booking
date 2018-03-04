@@ -8,7 +8,9 @@ const SponsorshipListItem = ({ id, issue, title, date, type, imageURL}) => (
       <h3 className="list-item__title">{title} - Issue {issue}</h3>
       <span className="list-item__sub-title">{moment(date).format('MMMM Do, YYYY')}</span>
       <span className="list-item__sub-title">{type}</span>
-      <img src={imageURL} />
+      {
+        imageURL && <img src={imageURL} />
+      }
     </div>
   </Link>
 );

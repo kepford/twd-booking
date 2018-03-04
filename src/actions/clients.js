@@ -1,6 +1,6 @@
 import database from '../firebase/firebase';
 
-// ADD_Client
+// ADD_CLIENT
 export const addClient = (client) => ({
   type: 'ADD_CLIENT',
   client

@@ -9,7 +9,6 @@ import { SingleDatePicker } from 'react-dates';
 import firebase from 'firebase';
 import FileUploader from 'react-firebase-file-uploader';
 import selectClients from '../selectors/clients';
-import isAdmin from '../utilities/isAdmin';
 import '../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 class SponsorshipForm extends React.Component {
@@ -18,7 +17,7 @@ class SponsorshipForm extends React.Component {
     const content = props.sponsorship ? htmlToDraft(props.sponsorship.primaryBody) : '';
     const contentState = content ? ContentState.createFromBlockArray(content.contentBlocks) : '';
     this.state = {
-      isAdmin: isAdmin(),
+      isAdmin: props.isAdmin,
       date: props.sponsorship ? moment(props.sponsorship.date) : moment(),
       issue: props.sponsorship ? props.sponsorship.issue : '',
       client: props.sponsorship ? props.sponsorship.client : '',
@@ -66,7 +65,7 @@ class SponsorshipForm extends React.Component {
     image.delete().then(function() {
       console.log('file was deleted');
     }).catch(function(error) {
-      console.log(error);
+      console.error(error);
     });
   };
   onEditorStateChange: Function = (editorState) => {
@@ -298,6 +297,7 @@ class SponsorshipForm extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
+    isAdmin: state.user.isAdmin,
     clients: selectClients(state.clients, state.filters)
   };
 };

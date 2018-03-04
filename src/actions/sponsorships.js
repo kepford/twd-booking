@@ -79,16 +79,28 @@ export const setSponsorships = (sponsorships) => ({
   sponsorships
 });
 
-export const startSetSponsorships = () => {
+export const startSetSponsorships = (user) => {
   return (dispatch) => {
     return database.ref(`sponsorships`).once('value').then((snapshot) => {
+      const isAdmin = user.isAdmin;
+      const client = user.client;
       const sponsorships = [];
-
       snapshot.forEach((childSnapshot) => {
-        sponsorships.push({
-          id: childSnapshot.key,
-          ...childSnapshot.val()
-        });
+        isAdmin ?
+          sponsorships.push(
+            {
+              id: childSnapshot.key,
+              ...childSnapshot.val()
+            }
+          )
+          : childSnapshot.val().client === client ?
+            sponsorships.push(
+              {
+                id: childSnapshot.key,
+                ...childSnapshot.val()
+              }
+            )
+            : false;
       });
 
       dispatch(setSponsorships(sponsorships));
