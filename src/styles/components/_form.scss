@@ -4,9 +4,31 @@
   >* {
     margin-bottom: $m-size;
   }
+  .help {
+    font-style:  italic;
+    background: lightyellow;
+    padding: .5em;
+    font-weight: lighter;
+  }
+  label {
+    font-weight: bold;
+  }
 }
 
 .form__error {
   margin: 0 0 $m-size 0;
   font-style: italic;
+  color: red;
+  border: dashed;
+  padding: 1em;
+}
+
+.admin {
+    border-style: dashed;
+    border-color: lightgray;
+    padding: .75em;
+}
+
+.image-uploader button {
+  margin: 1.75em
 }

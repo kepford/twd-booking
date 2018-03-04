@@ -22,9 +22,11 @@ class SponsorshipForm extends React.Component {
       issue: props.sponsorship ? props.sponsorship.issue : '',
       client: props.sponsorship ? props.sponsorship.client : '',
       title: props.sponsorship ? props.sponsorship.title : '',
+      titleRemaining: props.sponsorship ? 80 - props.sponsorship.title.length : 80,
       type: props.sponsorship ? props.sponsorship.type : '',
       url: props.sponsorship ? props.sponsorship.url : '',
       sponsoredLinkBody: props.sponsorship ? props.sponsorship.sponsoredLinkBody : '',
+      bodyRemaining: props.sponsorship ? 500 - props.sponsorship.sponsoredLinkBody.length : 500,
       primaryBody: props.sponsorship ? props.sponsorship.primaryBody : '',
       editorState: content ? EditorState.createWithContent(contentState) : EditorState.createEmpty(),
       calendarFocused: false,
@@ -85,7 +87,8 @@ class SponsorshipForm extends React.Component {
   };
   onTitleChange = (e) => {
     const title = e.target.value;
-    this.setState(() => ({ title }));
+    const titleRemaining = 80 - title.length;
+    this.setState(() => ({ title, titleRemaining }));
   };
   onTypeChange = (e) => {
     const type = e.target.value;
@@ -97,7 +100,9 @@ class SponsorshipForm extends React.Component {
   };
   onBodyChange = (e) => {
     const sponsoredLinkBody = e.target.value;
-    this.setState(() => ({ sponsoredLinkBody }));
+    const bodyRemaining = 500 - sponsoredLinkBody.length;
+    console.log(sponsoredLinkBody.length, 'length');
+    this.setState(() => ({ sponsoredLinkBody, bodyRemaining }));
   };
   onDateChange = (date) => {
     if (date) {
@@ -141,7 +146,7 @@ class SponsorshipForm extends React.Component {
     let body = null;
     let image = null;
     if (this.state.isAdmin) {
-      admin = <div className="admin">
+      admin = <div className="admin form">
         <label>
           Date
         </label>
@@ -209,16 +214,16 @@ class SponsorshipForm extends React.Component {
         }}
         onEditorStateChange={this.onEditorStateChange}
       />;
-      image = <div>
+      image = <div className='image-uploader'>
         <label>Image:</label>
         { this.state.isUploading &&
           <p>Progress: {this.state.progress}</p>
         }
         { this.state.imageURL &&
-          <div>
-            <img src={this.state.imageURL} />
-            <button className="button button--secondary" onClick={this.handleDeleteImage}>Remove Image</button>
-          </div>
+            <div className='image-uploader'>
+              <img src={this.state.imageURL} />
+              <button className="button button--secondary" onClick={this.handleDeleteImage}>Remove Image</button>
+            </div>
         }
         <FileUploader
           accept="image/*"
@@ -232,7 +237,7 @@ class SponsorshipForm extends React.Component {
           maxHeight="125"
           maxWidth="125"
         />
-        <div className="field-instructions">Images must be 125px by 125px. Images are automatically resized
+        <div className="help">Images must be 125px by 125px. Images are automatically resized
           to these dimensions.</div>
       </div>;
     }
@@ -250,10 +255,11 @@ class SponsorshipForm extends React.Component {
     return (
       <form className="form" onSubmit={this.onSubmit}>
         {this.state.error && <p className="form__error">{this.state.error}</p>}
-        { admin }
         <label>
           Title
         </label>
+        <div className='help'>80 characters or less is preferred.</div>
+        <div>{ this.state.titleRemaining } Characters remaining</div>
         <input
           type="text"
           placeholder="Title"
@@ -266,6 +272,7 @@ class SponsorshipForm extends React.Component {
         <label>
           Title URL
         </label>
+        <div className='help'>Include a link to your landing page.</div>
         <input
           type="url"
           placeholder="http://theweeklydrop.com"
@@ -275,11 +282,14 @@ class SponsorshipForm extends React.Component {
         <label>
           Body Copy
         </label>
+        <div className='help'>Keep is short and too the point. Between 20 and 60 words is about right.</div>
+        <div>{ this.state.bodyRemaining } Characters remaining</div>
         { body }
         { image }
         <label>
           Status
         </label>
+        <div className='help'>Select "Ready to publish" to complete your copy submission.</div>
         <select
           value={this.state.status}
           onChange={this.onStatusChange}
@@ -287,6 +297,7 @@ class SponsorshipForm extends React.Component {
           <option value="draft">Draft</option>
           <option value="Ready to publish">Ready to publish</option>
         </select>
+        { admin }
         <div>
           <button className="button">Save Sponsorship</button>
         </div>
