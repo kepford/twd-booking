@@ -28,7 +28,7 @@ export const SponsorshipList = (props) => (
 
 const mapStateToProps = (state) => {
   return {
-    sponsorships: selectSponsorships(state.sponsorships, state.filters)
+    sponsorships: selectSponsorships(state.sponsorships)
   };
 };
 
